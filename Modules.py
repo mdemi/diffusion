@@ -104,7 +104,7 @@ class UpSample(nn.Module):
     ):
         super().__init__()
         self.up = nn.Upsample(scale_factor=2, mode='bilinear')
-        self.conv1 = nn.Conv2d(in_ch, in_ch//2, kernel_size=2, padding='same')
+        self.conv1 = nn.Conv2d(in_ch, in_ch//2, kernel_size=3, padding="same")
         self.groupnorm1 = nn.GroupNorm(num_groups, in_ch//2)
         self.convblock1 = ConvBlock(in_ch, in_ch//2, num_groups=num_groups, residual=False)
         self.convblock2 = ConvBlock(in_ch//2, out_ch, num_groups=num_groups, residual=False)
