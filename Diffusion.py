@@ -45,6 +45,7 @@ class Diffusion:
         self.beta_max = beta_max
         self.batch_size = batch_size
         self.device = device
+        self.start_epoch = 1
 
         if beta_schedule == "quadratic":
             self.beta = torch.Tensor([beta_min + 
@@ -127,7 +128,8 @@ class Diffusion:
             checkpoint_path,
             model,
             optimizer=None,
-            learning_scheduler=None
+            learning_scheduler=None,
+            start_epoch=1
     ):
         """
         Loads a model from checkpoint_path.
@@ -151,6 +153,8 @@ class Diffusion:
         if learning_scheduler is not None:
             self.lr_scheduler = learning_scheduler
             self.lr_scheduler.load_state_dict(checkpoint['scheduler'])
+        if start_epoch is not None:
+            self.start_epoch = start_epoch
         return None
     
     def set_optimizer(self, optimizer):
@@ -220,7 +224,7 @@ class Diffusion:
         scaler = torch.cuda.amp.GradScaler()
 
         num_batches = len(data_loader)
-        for epoch in range(1, epochs+1):
+        for epoch in range(self.start_epoch, epochs+1):
             epoch_loss = 0
             min_loss = 100000
             with tqdm(data_loader, total=num_batches) as pbar:
