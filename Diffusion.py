@@ -139,6 +139,7 @@ class Diffusion:
             model (nn.Module): The model to load the checkpoint into.
             optimizer (Optimizer): The optimizer to load the checkpoint into.
             learning_scheduler (lr_scheduler): The lr_scheduler to load the checkpoint into.
+            start_epoch (int): The epoch to start training from.
 
         Returns:
             None
